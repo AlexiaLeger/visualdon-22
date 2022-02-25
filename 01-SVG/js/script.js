@@ -8,3 +8,11 @@ function changeCouleur(){
         click = false;
     }
 }
+
+function agrandirCercle(){
+    document.getElementById('cercle').setAttribute('r','70');
+}
+
+function retrecirCercle(){
+    document.getElementById('cercle').setAttribute('r','60');
+}
