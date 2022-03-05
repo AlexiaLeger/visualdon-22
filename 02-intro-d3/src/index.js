@@ -13,3 +13,9 @@ cercle3.attr('cx', '300');
 cercle1.append('text').attr('value', 'texte cercle1').attr('color','green');
 cercle2.append('text').attr('value', 'texte cercle2').attr('color','green');
 cercle3.append('text').attr('value', 'texte cercle3').attr('color','green');
+
+cercle3.on("click", ()=>{
+    cercle1.attr('cx', "100");
+    cercle2.attr('cx', "100");
+    cercle3.attr('cx', '100');
+})
