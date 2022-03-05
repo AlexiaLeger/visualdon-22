@@ -9,6 +9,7 @@ const cercle1=d3.select('#cercle1');
 const cercle3=d3.select('#cercle3');
 cercle1.attr('cx','100');
 cercle3.attr('cx', '300');
+
 const svgCercle = d3.select('#monsvg');
 svgCercle.append('text').text('texte cercle 1').attr('x',60).attr('y',100);
 svgCercle.append('text').text('texte cercle 2').attr('x',100).attr('y',200);
@@ -22,13 +23,15 @@ cercle3.on("click", ()=>{
 })
 
 const data = [20, 5, 25, 8, 15];
-const svg = d3.select("#svgRectangle")
-.selectAll("rect")
+const largeur = 20;
+const svg = d3.select("#svgRectangle");
+svg.selectAll("rect")
 .data(data)
 .enter()
 .append("rect")
-.attr('x', '50')
-.attr('y', '50')
-.attr('width', '20')
-.attr('heigth', d => data)
-.attr('fill', 'green');
+.attr('x', (d,i) => (i*23+50))
+.attr('y', d => 500-d)
+.attr('width', largeur)
+.attr('heigth', d => d)
+.attr('fill', 'green')
+.attr('stroke', 'black');
