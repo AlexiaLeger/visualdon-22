@@ -19,3 +19,15 @@ cercle3.on("click", ()=>{
     cercle2.attr('cx', "100");
     cercle3.attr('cx', '100');
 })
+
+const data = [20, 5, 25, 8, 15];
+const svg = d3.select("#svgRectangle")
+.selectAll("rect")
+.data(data)
+.enter()
+.append("rect")
+.attr('x', '50')
+.attr('y', '50')
+.attr('width', '20')
+.attr('heigth', d => data)
+.attr('fill', 'green');
