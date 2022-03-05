@@ -9,10 +9,11 @@ const cercle1=d3.select('#cercle1');
 const cercle3=d3.select('#cercle3');
 cercle1.attr('cx','100');
 cercle3.attr('cx', '300');
+const svgCercle = d3.select('#monsvg');
+svgCercle.append('text').text('texte cercle 1').attr('x',60).attr('y',100);
+svgCercle.append('text').text('texte cercle 2').attr('x',100).attr('y',200);
+svgCercle.append('text').text('texte cercle 3').attr('x',250).attr('y',300);
 
-cercle1.append('text').attr('value', 'texte cercle1').attr('color','green');
-cercle2.append('text').attr('value', 'texte cercle2').attr('color','green');
-cercle3.append('text').attr('value', 'texte cercle3').attr('color','green');
 
 cercle3.on("click", ()=>{
     cercle1.attr('cx', "100");
