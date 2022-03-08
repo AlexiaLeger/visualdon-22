@@ -22,25 +22,6 @@ cercle3.on("click", ()=>{
     cercle3.attr('cx', '100');
 })
 
-/*const data = [20, 5, 25, 8, 15];
-const largeur = 20;
-const factor = 8;
-const svg = d3.select("div")
-    .append("svg")
-    .attr("width", 300)
-    .attr("height", 650);
-const chart = svg.append("g").attr("transform", "translate(0,300)");
-
-data.forEach(element => chart.append("rect"));
-
-chart.selectAll("rect")
-.data(data)
-.attr('x', (d,i) => largeur * i)
-.attr('y', (d) => 100 - factor * d)
-.attr('width', largeur)
-.attr('heigth', (d) => factor * d)
-.attr('fill', 'green')
-.attr('stroke', 'black');*/
 
 const svg = d3.select("div")
     .append("svg")
