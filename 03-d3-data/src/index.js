@@ -19,17 +19,16 @@ svg.attr("width", width + margin.left + margin.right)
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");*/
 const x = d3.scaleLinear()
     .domain([0, 100])
-    .range([0, width])
+    .range([40, width])
 svg.append('g')
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 const y = d3.scaleLinear()
     .domain([0, 100])
-    .range([height, 0])
+    .range([height, 10])
 svg.append('g')
+    .attr("transform", "translate("+margin.left+",0)")
     .call(d3.axisLeft(y));
-
-//svg.append("circle").attr("cx", x(10)).attr("cy", y(60)).attr("r", 40).style("fill", "blue");
 
 //charger les données v2
 Promise.all([
@@ -58,15 +57,12 @@ Promise.all([
                 'id_utilisateur': usr.id
             }
             //4. affiche le graphique
-            svg.append("rect").attr("x", 20 * usr.id).attr("y", 10);
+            svg.append("rect").attr("x", 40 + 20 * usr.id).attr("y", 10);
             svg.selectAll("rect")
                 .attr('fill', '#69a3b2')
                 .attr('stroke', 'black')
                 .attr('width', 10)
                 .attr('height', 40 * posts_filtered.length);
-
-
-
             return newObject;
         })
         console.log(result2);
