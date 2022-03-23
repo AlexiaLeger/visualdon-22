@@ -11,7 +11,7 @@ const dataUsers = d3.json('https://jsonplaceholder.typicode.com/users').then(dat
 //mise en page des échelles et des axes
 const margin = { top: 10, right: 40, bottom: 10, left: 40 },
     width = 600 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 500 - margin.top - margin.bottom;
 const svg = d3.select('#monSvg');
 svg.attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -56,6 +56,12 @@ Promise.all([
                 'nom_utilisateur': usr.name,
                 'nombrePost': posts_filtered.length
             }
+            svg.append("rect").attr("x", 10*usr.id).attr("y", 10);
+            svg.selectAll("rect")
+                .attr('fill', '#69a3b2')
+                .attr('stroke', 'black')
+                .attr("width", 5)
+                .attr('height', 40*posts_filtered.length);
             return newObject;
         })
         //console.log(result2);
@@ -72,13 +78,13 @@ Promise.all([
         console.log(result3);
 
         //4. Graphique en baton
-        /*svg.append("rect").attr("x", index * users[index].id).attr("y", 10);
-        svg.select("rect")
+        svg.append("rect").attr("x", users.map(usr => usr.id)).attr("y", 10);
+        svg.selectAll("rect")
             .attr('fill', '#69a3b2')
             .attr('stroke', 'black')
             .attr("width", 5)
-            .attr('height', tabData[index].titres_posts.length);*/
-            
+            .attr('height', posts_filtered.lenght);
+
         //5. Etiquettes
     });
 
