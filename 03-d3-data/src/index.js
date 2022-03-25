@@ -27,7 +27,7 @@ const y = d3.scaleLinear()
     .domain([0, 100])
     .range([height, 10])
 svg.append('g')
-    .attr("transform", "translate("+margin.left+",0)")
+    .attr("transform", "translate(" + margin.left + ",0)")
     .call(d3.axisLeft(y));
 
 //charger les données v2
@@ -57,12 +57,20 @@ Promise.all([
                 'id_utilisateur': usr.id
             }
             //4. affiche le graphique
-            svg.append("rect").attr("x", 40 + 20 * usr.id).attr("y", 10);
-            svg.selectAll("rect")
+            const groupe = svg.append('g');
+            groupe.append("rect").attr("x", 40 + 20 * usr.id).attr("y", 10);
+            groupe.selectAll("rect")
                 .attr('fill', '#69a3b2')
                 .attr('stroke', 'black')
                 .attr('width', 10)
                 .attr('height', 40 * posts_filtered.length);
+                
+            //5. Etiquettes
+            groupe.append('text')
+                .text(newObject.nombrePost)
+                .attr('x', 20 * newObject.id_utilisateur)
+                .attr('y', 450)
+                .attr('stroke', 'black');
             return newObject;
         })
         console.log(result2);
@@ -77,16 +85,6 @@ Promise.all([
             return newObject;
         })
         //console.log(result3);
-
-        //5. Etiquettes
-        result2.map(usr => {
-            svg.select('rect')
-                .append('text')
-                .text(result2.nombrePost)
-                .attr('x', 20 * result2.id_utilisateur)
-                .attr('y', 450)
-                .attr('stroke', 'black');
-        })
 
     });
 
