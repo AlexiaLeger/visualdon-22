@@ -4,13 +4,13 @@ import esperance from '../data/life_expectancy_years.csv';
 import population from '../data/population_total.csv';
 // Pour importer les données
 // import file from '../data/data.csv'
-//console.log(pib);
+
 //1. affichage des axes
 const svg = d3.select('#monSvg');
 
 const margin = { top: 10, right: 40, bottom: 10, left: 40 },
     width = 1000 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 600 - margin.top - margin.bottom;
 
 svg.attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -18,35 +18,61 @@ svg.attr("width", width + margin.left + margin.right)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 //2. PIB sur axe x
-const tabPib1800 = pib.map((d,i) => {
-    return d[i];
+const tabPib1800 = pib.map(d => {
+    return d['1800'];
 })
-const tabPays = pib.map(d =>{
+const tabPays = pib.map(d => {
     return d.country;
 })
-console.log(tabPib1800);
-const x = d3.scaleBand()
-    .domain([tabPib1800])
+
+const x = d3.scaleLinear()
+    .domain([0, d3.max(tabPib1800)])
     .range([40, width])
 
 svg.append('g')
     .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x)
+        .ticks(20));
 
-const y = d3.scaleBand()
-    .domain([0, 10,20,30,40,50,60,70,80,90])
-    .range([height, 10])
+//3. Espérance sur axe y
+const tabEsperance1800 = esperance.map(d => {
+    return d['1800'];
+})
+const y = d3.scaleLinear()
+    .domain([0, d3.max(tabEsperance1800)])
+    .range([height, 40])
 
 svg.append('g')
     .attr("transform", "translate(" + margin.left + ",0)")
-    .call(d3.axisLeft(y));
-
-
-
-
-//3. Espérance sur axe y
+    .call(d3.axisLeft(y)
+        .ticks(20));
 
 
 //4. Cercle en fonction de la population
 
-
+//transforme fichier csv population
+const popTransformed = population.map(d => {
+    // Trouver le format SI (M, B, k)
+    let SI = typeof d["2021"] === 'string' || d["2021"] instanceof String ? d["2021"].slice(-1) : d["2021"];
+    // Extraire la partie numérique
+    let number = typeof d["2021"] === 'string' || d["2021"] instanceof String ? parseFloat(d["2021"].slice(0, -1)) : d["2021"];
+    // Selon la valeur SI, multiplier par la puissance
+    switch (SI) {
+        case 'M': {
+            return { "country": d.country, "pop": Math.pow(10, 6) * number };
+            break;
+        }
+        case 'B': {
+            return { "country": d.country, "pop": Math.pow(10, 9) * number };
+            break;
+        }
+        case 'k': {
+            return { "country": d.country, "pop": Math.pow(10, 3) * number };
+            break;
+        }
+        default: {
+            return { "country": d.country, "pop": number };
+            break;
+        }
+    }
+})
