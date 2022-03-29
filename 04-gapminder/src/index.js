@@ -18,15 +18,40 @@ svg.attr("width", width + margin.left + margin.right)
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 //2. PIB sur axe x
-const tabPib1800 = pib.map(d => {
-    return d['1800'];
-})
-const tabPays = pib.map(d => {
-    return d.country;
+const tabPib2021 = pib.map(d => {
+    return d['2021'];
 })
 
+//transforme tab pib
+const pibTransformed = pib.map(d => {
+    // Trouver le format SI (M, B, k)
+    let SI = typeof d["2021"] === 'string' || d["2021"] instanceof String ? d["2021"].slice(-1) : d["2021"];
+    // Extraire la partie numérique
+    let number = typeof d["2021"] === 'string' || d["2021"] instanceof String ? parseFloat(d["2021"].slice(0, -1)) : d["2021"];
+    // Selon la valeur SI, multiplier par la puissance
+    switch (SI) {
+        case 'M': {
+            return Math.pow(10, 6) * number;
+            break;
+        }
+        case 'B': {
+            return Math.pow(10, 9) * number;
+            break;
+        }
+        case 'k': {
+            return Math.pow(10, 3) * number;
+            break;
+        }
+        default: {
+            return number;
+            break;
+        }
+    }
+})
+console.log(pibTransformed);
+const maxPib = d3.max(pibTransformed);
 const x = d3.scaleLinear()
-    .domain([0, d3.max(tabPib1800)])
+    .domain([0, maxPib])
     .range([40, width])
 
 svg.append('g')
@@ -35,11 +60,12 @@ svg.append('g')
         .ticks(20));
 
 //3. Espérance sur axe y
-const tabEsperance1800 = esperance.map(d => {
-    return d['1800'];
+const tabEsperance2021 = esperance.map(d => {
+    return d['2021'];
 })
+//console.log(tabEsperance2021);
 const y = d3.scaleLinear()
-    .domain([0, d3.max(tabEsperance1800)])
+    .domain([0, d3.max(tabEsperance2021)])
     .range([height, 40])
 
 svg.append('g')
@@ -47,8 +73,12 @@ svg.append('g')
     .call(d3.axisLeft(y)
         .ticks(20));
 
-
 //4. Cercle en fonction de la population
+
+//tableau des pays
+const tabPays = pib.map(d => {
+    return d.country;
+})
 
 //transforme fichier csv population
 const popTransformed = population.map(d => {
@@ -76,3 +106,59 @@ const popTransformed = population.map(d => {
         }
     }
 })
+//console.log(popTransformed);
+
+//faire un tableau avec les trois tableau de données pour pouvoir y avoir accès ici
+const groupe = svg.append('g');
+groupe.selectAll('circle')
+    .data(popTransformed)
+    .enter()
+    .append('circle')
+    .attr('cx', d => x(pibTransformed[d]))
+    .attr('cy', d => y(tabEsperance2021[d]))
+    .attr('r', d.pop / 10000000)
+    .attr('stroke', 'black')
+    .attr('fill', 'white');
+/*groupe.append('text')
+.text()
+.attr('x',pib['2021'].country )
+.attr('y', esperance['2021'].country + (d.pop/100)/2)
+.attr('stroke', 'black');*/
+
+// Récupère toutes les années
+//let annees = Object.keys(population[0])
+
+// Initialiser objet
+/*let popData = [];
+
+annees.forEach(annee => {
+    let popNumber = population.map(d => {
+
+        // Trouver le format SI (M, B, k)
+        let SI = typeof d[annee.toString()] === 'string' || d[annee.toString()] instanceof String ? d[annee.toString()].slice(-1) : d[annee.toString()];
+        // Extraire la partie numérique
+        let number = typeof d[annee.toString()] === 'string' || d[annee.toString()] instanceof String ? parseFloat(d[annee.toString()].slice(0, -1)) : d[annee.toString()];
+        // Selon la valeur SI, multiplier par la puissance
+        switch (SI) {
+            case 'M': {
+                return { "country": d.country, "pop": Math.pow(10, 6) * number };
+                break;
+            }
+            case 'B': {
+                return { "country": d.country, "pop": Math.pow(10, 9) * number };
+                break;
+            }
+            case 'k': {
+                return { "country": d.country, "pop": Math.pow(10, 3) * number };
+                break;
+            }
+            default: {
+                return { "country": d.country, "pop": number };
+                break;
+            }
+        }
+
+    });
+    return popData.push({ "annee": annee, "data": popNumber });
+});*/
+//console.log(popData);
