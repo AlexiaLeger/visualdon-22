@@ -50,7 +50,7 @@ const pibTransformed = pib.map(d => {
 })
 //console.log(pibTransformed);
 const maxPib = d3.max(pibTransformed);
-const x = d3.scaleLinear()
+const x = d3.scaleSqrt()
     .domain([0, maxPib])
     .range([40, width])
 
