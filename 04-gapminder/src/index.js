@@ -57,7 +57,7 @@ const x = d3.scaleSqrt()
 svg.append('g')
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x)
-        .ticks(20));
+        .ticks(15));
 
 //3. Espérance sur axe y
 const tabEsperance2021 = esperance.map(d => {
