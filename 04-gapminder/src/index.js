@@ -48,7 +48,7 @@ const pibTransformed = pib.map(d => {
         }
     }
 })
-console.log(pibTransformed);
+//console.log(pibTransformed);
 const maxPib = d3.max(pibTransformed);
 const x = d3.scaleLinear()
     .domain([0, maxPib])
@@ -65,7 +65,7 @@ const tabEsperance2021 = esperance.map(d => {
 })
 //console.log(tabEsperance2021);
 const y = d3.scaleLinear()
-    .domain([0, d3.max(tabEsperance2021)])
+    .domain([40, d3.max(tabEsperance2021)])
     .range([height, 40])
 
 svg.append('g')
@@ -106,59 +106,27 @@ const popTransformed = population.map(d => {
         }
     }
 })
-//console.log(popTransformed);
+let tabTout = [];
+for (let index = 0; index < popTransformed.length; index++) {
+    let ligne = {
+        "pib" : pibTransformed[index],
+        "esperance" : tabEsperance2021[index],
+        "population" : popTransformed[index].pop,
+        "pays" : tabPays[index]
+    }
+    tabTout.push(ligne);
+}
 
+//console.log(tabTout);
 //faire un tableau avec les trois tableau de données pour pouvoir y avoir accès ici
 const groupe = svg.append('g');
 groupe.selectAll('circle')
-    .data(popTransformed)
+    .data(tabTout)
     .enter()
     .append('circle')
-    .attr('cx', d => x(pibTransformed[d]))
-    .attr('cy', d => y(tabEsperance2021[d]))
-    .attr('r', d.pop / 10000000)
+    .attr('r', d => d.population/10000000)
+    .attr('cx', d => x(d.pib - margin.left))
+    .attr('cy', d => y(d.esperance - margin.bottom))
     .attr('stroke', 'black')
     .attr('fill', 'white');
-/*groupe.append('text')
-.text()
-.attr('x',pib['2021'].country )
-.attr('y', esperance['2021'].country + (d.pop/100)/2)
-.attr('stroke', 'black');*/
-
-// Récupère toutes les années
-//let annees = Object.keys(population[0])
-
-// Initialiser objet
-/*let popData = [];
-
-annees.forEach(annee => {
-    let popNumber = population.map(d => {
-
-        // Trouver le format SI (M, B, k)
-        let SI = typeof d[annee.toString()] === 'string' || d[annee.toString()] instanceof String ? d[annee.toString()].slice(-1) : d[annee.toString()];
-        // Extraire la partie numérique
-        let number = typeof d[annee.toString()] === 'string' || d[annee.toString()] instanceof String ? parseFloat(d[annee.toString()].slice(0, -1)) : d[annee.toString()];
-        // Selon la valeur SI, multiplier par la puissance
-        switch (SI) {
-            case 'M': {
-                return { "country": d.country, "pop": Math.pow(10, 6) * number };
-                break;
-            }
-            case 'B': {
-                return { "country": d.country, "pop": Math.pow(10, 9) * number };
-                break;
-            }
-            case 'k': {
-                return { "country": d.country, "pop": Math.pow(10, 3) * number };
-                break;
-            }
-            default: {
-                return { "country": d.country, "pop": number };
-                break;
-            }
-        }
-
-    });
-    return popData.push({ "annee": annee, "data": popNumber });
-});*/
-//console.log(popData);
+    
