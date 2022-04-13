@@ -107,7 +107,7 @@ datas.forEach(country=>{
 })
 
 // Axe x
-var x = d3.scaleLog()
+var x = d3.scaleSqrt()
     .domain([pibMinimum, 128000])
     .range([0, width]);
 svg.append("g")
@@ -116,7 +116,7 @@ svg.append("g")
 
 // Axe y
 var y = d3.scaleLinear()
-    .domain([0, esperanceMax])
+    .domain([20, esperanceMax])
     .range([height, 0]);
 svg.append("g")
     .call(d3.axisLeft(y));
@@ -125,7 +125,6 @@ svg.append("g")
 var z = d3.scaleLinear()
     .domain([populationMin, populationMax])
     .range([1, 40]);
-
 
 
 function afficheCercle(annee) {
@@ -151,7 +150,7 @@ function afficheCercle(annee) {
                 .attr("r", function (d) {
                     return z(nettoieDonnees(d.population[annee]));
                 })
-                .attr("stroke", "black"),
+                .attr("stroke", "green"),
 
             update => update
                 .attr("cx", function (d) {
