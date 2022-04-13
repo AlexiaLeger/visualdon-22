@@ -3,14 +3,34 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>04-d3-gapminder 2</title>
+    <title>Gapminder - animation</title>
     <link rel="shortcut icon" href="../assets/img/favicon.ico">
+
+    <style>
+        #yearRange {
+            width: 100%;
+        }
+        
+        #play {
+            width: 4rem;
+            background-color: blue;
+            color: white;
+        }
+        h1 {
+            color:brown;
+        }
+    </style>
 </head>
 
 <body>
-    <svg id="monSvg" width="1350" height="10000">
-
-    </svg>
+    <div id="population_income">
+        <h1 class="graphique_title">Population en fonction du PIB et de l'espérence de vie</h1>
+        <div class="graphique"></div>
+    </div>
+    <div id="tooltip"></div>
+    <button id="play">Pause</button>
+    <input type="range" id="yearRange">
+    <label for="yearRange"></label>
 </body>
 
 </html>
