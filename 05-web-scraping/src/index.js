@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as puppeteer from "puppeteer";
 
 (async () => {
@@ -28,3 +29,9 @@ import * as puppeteer from "puppeteer";
 })();
 
 //webscraper site e-commerce
+=======
+import jsdom from "jsdom";
+import fetch from "isomorphic-fetch"
+import puppeteer from "puppeteer"
+
+>>>>>>> 33002473cc1fe9ac1760f63518f801ae49732448
